@@ -36,7 +36,7 @@ jobs:
         echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Build with PyInstaller
-      run: pyinstaller --onefile --name brillo-linux BRILLO.py
+      run: pyinstaller --onefile --name brillo-linux src/brillo/BRILLO.py
 
     - name: List dist directory
       run: ls -l dist/

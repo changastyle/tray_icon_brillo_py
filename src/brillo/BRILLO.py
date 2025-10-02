@@ -5,6 +5,8 @@ import threading
 import schedule
 import time
 
+AUTO_DIM_HOUR = "21:00"  # Hora programada para brillo automático
+
 # Variable global para el brillo actual
 current_brightness = sbc.get_brightness()[0]  # Obtener el brillo inicial
 
@@ -110,7 +112,7 @@ def auto_dim():
         print(f"Error al poner brillo en 0%: {e}")
 
 # Programar la tarea diaria a las 21:00
-schedule.every().day.at("21:00").do(auto_dim)
+schedule.every().day.at(AUTO_DIM_HOUR).do(auto_dim)
 
 def schedule_thread():
     while True:
