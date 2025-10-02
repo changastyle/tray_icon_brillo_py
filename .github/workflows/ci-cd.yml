@@ -36,13 +36,13 @@ jobs:
         echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Build with PyInstaller
-      run: pyinstaller --onefile --name BRILLO BRILLO.py
+      run: pyinstaller --onefile --name brillo-linux BRILLO.py
 
     - name: List dist directory
       run: ls -l dist/
 
     - name: Verify executable exists
-      run: test -f dist/BRILLO
+      run: test -f dist/brillo-linux
 
     - name: Create Release
       if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/ci-cd') || startsWith(github.ref, 'refs/heads/prod')
@@ -60,12 +60,12 @@ jobs:
           - Message: $(cat dist/version-info/commit-message.txt)
           
           📦 Assets:
-          - BRILLO (Executable)
+          - brillo-linux (Linux Executable)
           - BRILLO.exe (Windows Executable)
         draft: false
         prerelease: false
         files: |
-          dist/BRILLO
+          dist/brillo-linux
           dist/BRILLO.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
