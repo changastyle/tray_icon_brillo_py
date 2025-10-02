@@ -45,7 +45,7 @@ jobs:
       run: test -f dist/BRILLO
 
     - name: Create Release
-      if: github.ref == 'refs/heads/main'
+      if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/ci-cd') || startsWith(github.ref, 'refs/heads/prod')
       uses: softprops/action-gh-release@v1
       with:
         tag_name: brillo-${{ env.RELEASE_DATE }}
