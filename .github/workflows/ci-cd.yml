@@ -48,8 +48,8 @@ jobs:
       if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/ci-cd') || startsWith(github.ref, 'refs/heads/prod')
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: brillo-${{ env.RELEASE_DATE }}
-        name: brillo-${{ env.RELEASE_DATE }}
+        tag_name: tray-icon-brillo-${{ env.RELEASE_DATE }}
+        name: tray-icon-brillo-${{ env.RELEASE_DATE }}
         body: |
           🚀 BRILLO Release (${{ env.RELEASE_DATE }} ${{ env.BUILD_TIME }})
           
