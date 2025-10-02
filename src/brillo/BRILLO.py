@@ -6,7 +6,7 @@ import schedule
 import time
 import math
 
-AUTO_DIM_HOUR = "05:49"  # Hora programada para brillo automático
+AUTO_DIM_HOUR = "21:00"  # Hora programada para brillo automático
 
 # Variable global para el brillo actual
 current_brightness = sbc.get_brightness()[0]  # Obtener el brillo inicial
