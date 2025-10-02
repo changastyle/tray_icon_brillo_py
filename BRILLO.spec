@@ -2,8 +2,8 @@
 
 
 a = Analysis(
-    ['BRILLO.py'],
-    pathex=[],
+    ['src/brillo/BRILLO.py'],
+    pathex=['src/brillo'],
     binaries=[],
     datas=[],
     hiddenimports=['pystray'],

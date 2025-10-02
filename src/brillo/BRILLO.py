@@ -2,6 +2,8 @@ from pystray import Icon, Menu, MenuItem
 from PIL import Image, ImageDraw, ImageFont
 import screen_brightness_control as sbc
 import threading
+import schedule
+import time
 
 # Variable global para el brillo actual
 current_brightness = sbc.get_brightness()[0]  # Obtener el brillo inicial
@@ -96,11 +98,33 @@ def on_left_click(icon, event):
     icon.visible = True  # Asegúrate de que el icono sea visible
     icon.update_menu()
 
+def auto_dim():
+    global current_brightness
+    try:
+        if current_brightness != 0:
+            sbc.set_brightness(0)
+            current_brightness = 0
+            print("Brillo automático: 0% por horario nocturno (schedule)")
+            update_icon(icon)
+    except Exception as e:
+        print(f"Error al poner brillo en 0%: {e}")
+
+# Programar la tarea diaria a las 21:00
+schedule.every().day.at("21:00").do(auto_dim)
+
+def schedule_thread():
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
+
 # Inicializar el ícono con el brillo actual
 icon = Icon("Control de Brillo", create_icon(current_brightness), menu=menu)
 
 # Asignar evento de clic izquierdo
 icon.on_left_click = on_left_click
+
+# Lanzar el hilo de schedule para la tarea automática
+threading.Thread(target=schedule_thread, daemon=True).start()
 
 # Ejecutar el tray icon
 icon.run()
