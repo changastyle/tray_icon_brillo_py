@@ -61,9 +61,11 @@ jobs:
           
           📦 Assets:
           - BRILLO (Executable)
+          - BRILLO.exe (Windows Executable)
         draft: false
         prerelease: false
         files: |
           dist/BRILLO
+          dist/BRILLO.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
