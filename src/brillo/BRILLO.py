@@ -4,6 +4,7 @@ import screen_brightness_control as sbc
 import threading
 import schedule
 import time
+import math
 
 AUTO_DIM_HOUR = "05:49"  # Hora programada para brillo automático
 
@@ -13,27 +14,36 @@ current_brightness = sbc.get_brightness()[0]  # Obtener el brillo inicial
 # Función para crear un ícono dinámico con el nivel de brillo actual
 def create_icon(brightness):
     width, height = 64, 64
-    image = Image.new("RGB", (width, height), "white")
+    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))  # Fondo transparente
     draw = ImageDraw.Draw(image)
 
-    # Texto a mostrar
-    text = f"{brightness}%"
+    # Dibujar el sol (círculo amarillo)
+    sun_radius = 22
+    sun_center = (width // 2, height // 2)
+    draw.ellipse([
+        sun_center[0] - sun_radius, sun_center[1] - sun_radius,
+        sun_center[0] + sun_radius, sun_center[1] + sun_radius
+    ], fill="#FFD700", outline="#FFA500", width=2)
 
-    # Configurar fuente y tamaño (fuente por defecto si no encuentra Arial)
+    # Dibujar rayos del sol
+    for angle in range(0, 360, 30):
+        x1 = sun_center[0] + int((sun_radius + 4) * math.cos(math.radians(angle)))
+        y1 = sun_center[1] + int((sun_radius + 4) * math.sin(math.radians(angle)))
+        x2 = sun_center[0] + int((sun_radius + 12) * math.cos(math.radians(angle)))
+        y2 = sun_center[1] + int((sun_radius + 12) * math.sin(math.radians(angle)))
+        draw.line([(x1, y1), (x2, y2)], fill="#FFA500", width=2)
+
+    # Texto a mostrar (porcentaje de brillo)
+    text = f"{brightness}%"
     try:
-        font = ImageFont.truetype("arial.ttf", 32)
+        font = ImageFont.truetype("arial.ttf", 18)
     except IOError:
         font = ImageFont.load_default()
-
-    # Calcular posición del texto para centrarlo usando textbbox
-    text_bbox = draw.textbbox((0, 0), text, font=font)  # Calcula los límites del texto
-    text_width = text_bbox[2] - text_bbox[0]  # Ancho
-    text_height = text_bbox[3] - text_bbox[1]  # Alto
-
-    text_x = (width - text_width) // 2  # Centrar horizontalmente
-    text_y = (height - text_height) // 2  # Centrar verticalmente
-
-    # Dibujar el texto en la imagen
+    text_bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = text_bbox[2] - text_bbox[0]
+    text_height = text_bbox[3] - text_bbox[1]
+    text_x = sun_center[0] - text_width // 2
+    text_y = sun_center[1] - text_height // 2
     draw.text((text_x, text_y), text, fill="black", font=font)
     return image
 
